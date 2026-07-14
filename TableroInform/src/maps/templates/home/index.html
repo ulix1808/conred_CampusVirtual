@@ -1,0 +1,234 @@
+{% extends "maps_base_3.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<style>
+    .col-sm-4 {
+        padding: 0.14vw;
+    }
+    .col-sm-2 {
+        padding: 0.14vw;
+    }
+</style>
+<style>
+    .map {
+      height: 63.2vh;
+      width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Start Content-->
+    
+        {% if mobile %}
+    <div style=" background-color: #e7e7e7;">
+            <div style="margin-top: 1vh; margin-left: 3vw; margin-right: 3.3vw;">
+
+                <div class="col-xs-12 col-sm-2">
+                    <div  style="height:55.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;">
+                            <h3 style="font-size: 2.8vh;"><b>Bienvenidos al tablero INFORM GUATEMALA 2021.</b></h3>
+                        </div>
+                        <div style="height:84%; width: 100%;">
+                            <p style="text-align: justify; font-size: 1.7vh;">
+                                Desde la Coordinadora Nacional para la Reducción de Desastres –CONRED- se reconoce que disponer de información clara y de fácil de acceso conduce a una mejor coordinación de los actores y mejores resultados para la reducción de riesgos y desastres. El Índice para la Gestión del Riesgo –INFORM- crea un espacio y un proceso para el análisis compartido de datos que puede apoyar el desarrollo de estrategias conjuntas, una planificación y acciones para prevenir, mitigar, prepararse, responder y recuperarse ante situaciones de riesgo, emergencia o desastre. 
+                                El tablero INFORM Guatemala muestra todos los datos de las dimensiones de riesgo INFORM disponibles en el país. Puede seleccionar el tipo de consulta que necesite, navegar a través de todos los indicadores de las categorías y generar reportes sobre el ranking de riesgo por Municipio o Departamento.
+    
+                            </p>
+                        </div>
+                    </div>
+
+
+
+                    <div  style="height:12.3vh; margin-bottom: 1vh; text-align: center; background-color:white;"  class="border-1">
+                        <div style="padding-top: 1vzh;">
+                            <p style="font-size: 2vh">
+                                <b> ¿Cómo se utiliza el INFORM Guatemala?
+                                <br>
+                                    INFORM Guatemala</b> puede utilizarse para:
+                            </p>
+                        </div>
+                    </div>
+
+                    
+                    <div style="height:22.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;"></div>
+                        <div style="height:84%; width: 100%;">
+                            <div style="text-align: center;">
+                                <img src="/static/images/img1.png" alt="" style="height: 13vh; width: 15vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Priorizar Municipios </b>por 
+                                    <br>nivel de riesgo o por 
+                                    <br>cualquiera de sus componentes
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+
+                    <div style="height:22.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;"></div>
+                        <div style="height:84%; width: 100%;">
+                            <div style="text-align: center;">
+                                <img src="/static/images/img2.png" alt="" style="height: 13vh; width: 15vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Decidir </b>sobre qué
+                                    <br>factores intervenir para 
+                                    <br>reducir el riesgo
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <div style="height:22.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;"></div>
+                        <div style="height:84%; width: 100%;">
+                            <div style="text-align: center;">
+                                <img src="/static/images/img3.png" alt="" style="height: 13vh; width: 15vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Monitorear </b>tendencias
+                                    <br>de riesgo
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <div  style="height:40.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;">
+                            <p style="font-size: 1.6vh;"> <b>¿Cómo funciona INFORM Guatemala?</b></p>
+                        </div>
+                        <div style="height:84%; width: 100%;">
+                            <img src="/static/images/img4.png" style=" height: 28vh; width: 42vh;">
+                        </div>
+                    </div>
+
+
+                    <div  style="height:22.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;">
+                            <p style="font-size: 1.6vh;"><b>Resultados y alcances de INFORM Guatemala </b></p>
+                        </div>
+                        <div style="height:84%; width: 100%;">
+                            <p style="font-size: 1.4vh; text-align: justify;">El INFORM un índice compuesto que muestra una visión simplificada de la realidad. Por lo tanto, es recomendable que se utilice junto con otras fuentes de información complementarias. Los detalles completos de la metodología y una discusión más detallada de sus limitaciones están disponibles en el sitio web de la iniciativa global.</p>
+                        </div>
+                    </div>
+
+                    <div  style="height:35.3vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">
+                        <div style="padding-top: 1vh;">
+                            <h3 style="font-size: 2.8vh;"><b>¿Qué es INFORM Guatemala?</b></h3>
+                        </div>
+                        <div style="height:84%; width: 100%;">
+                            <p style="text-align: justify; font-size: 1.7vh;">
+                                INFORM Guatemala es una herramienta nacional, abierta, objetiva y transparente para comprender el nivel de riesgo de desastres en los 340 municipios del país. Puede ayudar a identificar dónde existe mayor riesgo de daños y pérdidas ante la ocurrencia de fenómenos de diverso origen, lo que significa que de manera correctiva se podrá reducir el riesgo, mejorar la resiliencia de las personas y preparar mejor a los actores sociales en caso de presentarse una situación de riesgo, emergencia o desastre.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div  style="height:9.0vh; background-color:white; margin-bottom: 1vh; padding-left: 4vw; padding-right: 4vw;" class="border-1">    
+                            <p style="text-align: justify; font-size: 1.55vh;">
+                                <b>Posicione el mouse sobre el ícono <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Boton de ayuda"></i> para obtener ayuda si la necesita o consulte el manual de usuario</b> <a href="{% static 'docs/Manual_Usuario.pdf' %}" downloads style="color: #383737;"><b>aqui</b></a>
+                            </p>
+                    </div>
+
+
+            </div>
+        {% else %}
+    <div style=" background-color: #fff;">
+            <div style="height: 74.7vh;">
+                <div class="row" style="height: 60vh;">
+                    <div class="col-4" style="height: 100%; padding-left: 6vw; padding-top: 10vh;">
+                        <h3 style="font-size: 2.8vh;"><b>Bienvenidos al tablero INFORM GUATEMALA 2021.</b></h3>
+
+                        <p style="text-align: justify; font-size: 1.55vh;">
+                            Desde la Coordinadora Nacional para la Reducción de Desastres –CONRED- se reconoce que disponer de información clara y de fácil de acceso conduce a una mejor coordinación de los actores y mejores resultados para la reducción de riesgos y desastres. El Índice para la Gestión del Riesgo –INFORM- crea un espacio y un proceso para el análisis compartido de datos que puede apoyar el desarrollo de estrategias conjuntas, una planificación y acciones para prevenir, mitigar, prepararse, responder y recuperarse ante situaciones de riesgo, emergencia o desastre. 
+                            El tablero INFORM Guatemala muestra todos los datos de las dimensiones de riesgo INFORM disponibles en el país. Puede seleccionar el tipo de consulta que necesite, navegar a través de todos los indicadores de las categorías y generar reportes sobre el ranking de riesgo por Municipio o Departamento.
+
+                        </p>
+                    </div>
+                    <div class="col-7">
+
+                        <div class="row" style="padding-top: 3vh;">
+                            <div class="col-12" style="text-align: center;">
+                                <p style="font-size: 2vh">
+                                    <b> ¿Cómo se utiliza el INFORM Guatemala?
+                                    <br>
+                                        INFORM Guatemala</b> puede utilizarse para:
+                                </p>
+
+                            </div>
+
+                            <div class="col-4" style="text-align: center;">
+                                <img src="/static/images/img1.png" alt="" style="height: 8vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Priorizar Municipios </b>por 
+                                    <br>nivel de riesgo o por 
+                                    <br>cualquiera de sus componentes
+                                </p>
+                            </div>
+                            <div class="col-4" style="text-align: center;">
+                                <img src="/static/images/img2.png" alt="" style="height: 8vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Decidir </b>sobre qué
+                                    <br>factores intervenir para 
+                                    <br>reducir el riesgo
+                                </p>
+                            </div>
+                            <div class="col-4" style="text-align: center;">
+                                <img src="/static/images/img3.png" alt="" style="height: 8vh;">
+                                <br>
+                                <p style="font-size: 1.4vh;">
+                                    <b>Monitorear </b>tendencias
+                                    <br>de riesgo
+                                </p>
+                            </div>
+                            <div class="col-7" style="text-align: center; padding-left: 2vw;">
+                               <p style="font-size: 1.6vh;"> <b>¿Cómo funciona INFORM Guatemala?</b></p>
+                                <img src="/static/images/img4.png" style=" height: 28vh; width: 45vh;">
+                            </div>
+                            <div class="col-5" style="text-align: justify; padding-top: 8vh;">
+                                <p style="font-size: 1.6vh;"><b>Resultados y alcances de INFORM Guatemala </b></p>
+                            <p style="font-size: 1.4vh;">El INFORM un índice compuesto que muestra una visión simplificada de la realidad. Por lo tanto, es recomendable que se utilice junto con otras fuentes de información complementarias. Los detalles completos de la metodología y una discusión más detallada de sus limitaciones están disponibles en el sitio web de la iniciativa global.</p>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="row" style="padding-left: 6vw; padding-right: 6vw;">
+
+                    <h3 style="font-size: 2.7vh;"><b>¿Qué es INFORM Guatemala?</b></h3>
+                    <p style="text-align: justify; font-size: 1.55vh;">
+                        INFORM Guatemala es una herramienta nacional, abierta, objetiva y transparente para comprender el nivel de riesgo de desastres en los 340 municipios del país. Puede ayudar a identificar dónde existe mayor riesgo de daños y pérdidas ante la ocurrencia de fenómenos de diverso origen, lo que significa que de manera correctiva se podrá reducir el riesgo, mejorar la resiliencia de las personas y preparar mejor a los actores sociales en caso de presentarse una situación de riesgo, emergencia o desastre.
+                    </p>
+
+                </div>
+                <div class="row" style="padding-right: 6vw;">
+                    <p style="text-align: end; font-size: 1.55vh;">
+                       <b>Posicione el mouse sobre el ícono <i class="fas fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Boton de ayuda"></i> para obtener ayuda si la necesita o consulte el manual de usuario</b> <a href="{% static 'docs/Manual_Usuario.pdf' %}" downloads style="color: #383737;"><b>aqui</b></a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+<!-- End Content-->
+
+{% endblock %}
+{% block extra_javascript %}
+<!--script>
+</script-->
+{% endblock%}

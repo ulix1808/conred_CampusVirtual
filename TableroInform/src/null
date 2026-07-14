@@ -1,0 +1,8 @@
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+May 26, 2025 - 16:34:44
+Django version 3.2.9, using settings 'maps.settings'
+Starting development server at http://0.0.0.0:8080/
+Quit the server with CONTROL-C.

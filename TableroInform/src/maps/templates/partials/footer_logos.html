@@ -1,0 +1,44 @@
+{% load static i18n %}
+<!--boottom bar-->
+<div style="margin-left: 0.6vw; margin-right: 0.6vw;padding-top: 0%; margin-top: 0%; padding-left: 0;">
+            {% if mobile %}
+    <div  style="background-color: #ffffff; height:35vh; align-items: flex-end;" class="border-1" >
+            <div class="row">
+             
+              <div class="col" style="margin-top: 1vh; text-align: center;">
+                <img src="{% static 'images/gobiernos.jpg' %}"  style="height: 9vh;" alt="My image">
+              </div>
+
+              <div class="col" style="margin-top: 1vh; text-align: center;">
+                <img src="{% static 'images/unicef.png' %}"  style="height: 10.5vh;" alt="My image">
+              </div>
+
+<!--              <div class="col" style="text-align: center; margin-top: 1vh;">
+                <img src="{% static 'images/iso-01.png' %}"  style="height: 9vh;" alt="My image">
+              </div> -->
+            </div>
+            {% else %}
+            
+            <!--div class="col" style="margin-right: 2vw; margin-top: 1vh;">
+              <img src="{% static 'images/gobiernos.jpg' %}"  style="height: 9vh; float: right;" alt="My image">
+            </div-->
+    <div  style="background-color: #ffffff; height:11vh; align-items: flex-end;" class="border-1" >
+            <div class="row">
+             
+              <div class="col" style="margin-left: 2vw; margin-top: 1vh;">
+                <img src="{% static 'images/gobiernos.jpg' %}"  style="height: 9vh;" alt="My image">
+              </div>
+
+              <div class="col" style="margin-top: 1vh; text-align: center;">
+                <img src="{% static 'images/unicef.png' %}"  style="height: 10.5vh;" alt="My image">
+              </div>
+
+         <!--     <div class="col" style="margin-right: 2vw; margin-top: 1vh;">
+                <img src="{% static 'images/iso-01.png' %}"  style="height: 9vh; float: right;" alt="My image">
+              </div> -->
+            </div>
+            {% endif %}
+        
+    </div>
+</div>
+<!--end Bar-->

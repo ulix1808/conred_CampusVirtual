@@ -2,12 +2,16 @@
 .env
 .env.*
 !.env.example
+**/.env
+!**/.env.example
+!**/.env_exemple
 *.pem
 *.key
 *credentials*.csv
 *credentials*.txt
-**/config.php
-!**/config.example.php
+.local-secrets/
+config.php
+!config.example.php
 !**/moodle-config.example.php
 
 # OS / IDE
@@ -16,16 +20,22 @@
 .vscode/
 *.swp
 
-# Python / venv (por si se agrega código después)
+# Python
 venv/
 venv_backup/
 __pycache__/
 *.pyc
+*.py[cod]
+*.egg-info/
+.Python
 
-# Archives / dumps
-*.sql
-*.sql.gz
-*.dump
+# Logs / runtime
+*.log
+Secuencias/
+node_modules/
+
+# Large media archives (not source dumps)
 *.tar
 *.tar.gz
 *.zip
+*.sql.gz

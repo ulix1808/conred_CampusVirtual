@@ -1,0 +1,135 @@
+{% load static i18n %}
+<style>
+  .nav-tabs .nav-link {
+  background-color: #ffffff;
+  border: 0px solid transparent;
+  
+}
+
+.active {
+    background-color: #e6dddd !important;
+    border-color:#e6dddd !important;
+    
+}
+</style>
+
+<style>
+  .vl {
+    border-left: 0.5px solid #fff;
+    height: 1.2vh;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  </style>
+<!-- Topbar Start -->
+  <nav class="navbar navbar-dark" style="background-color: #ffffff; height:9vh; align-items: flex-start;">
+    
+        <div class="" style="margin-left: 2vw;">
+          <img src="{% static 'images/conred.png' %}"  style="height: 7.3vh;" alt="My image">
+        </div>
+        {% if mobile %}
+        <div class="" style="margin-right: 2vw; margin-top: 1vh;">
+          <img src="{% static 'images/inform.png' %}"  style="height: 7.3vh;" alt="My image">
+        </div>
+        {% else %}
+        <div class="" style="margin-right: 2vw; margin-top: 1vh;">
+          <img src="{% static 'images/inform.png' %}"  style="height: 10.8vh;" alt="My image">
+        </div>
+        {% endif %}
+        <!--div class="textArea" style="color: #2a2057; padding-left: 0.9vw; padding-top: 0.7vh;">
+        <h4 style="font-size: 2.5vh;">INFORM 2021 GUATEMALA</h4>
+        <p class="subtitle" style="color: #2a2057;"></p-->
+    
+  </nav>
+
+  
+  <ul class="nav nav-tabs" style="background-color: #ffffff; padding-left: 0.9vw; font-size: 1.5vh; padding-bottom: 0.1vh;" id="mytab">
+    <li class="nav-item" style="">
+      <a class="nav-link {% if nbar == 0 %}active{% endif %}" aria-current="page" href="{% url 'index' %}" style="color: #2a2057;">INFORM</a>
+    </li>
+    <li class="nav-item" style="">
+      <a class="nav-link {% if nbar == 1 %}active{% endif %}" aria-current="page" href="{% url 'home' %}" style="color: #2a2057;">Indice de Riesgo</a>
+    </li>
+    <div class="vl"></div>
+    <li class="nav-item" style="">
+      <a class="nav-link {% if nbar == 2 %}active{% endif %}" href="{% url 'peligro' %}" style="color: #2a2057;">Peligro y Exposición</a>
+    </li>
+    <div class="vl"></div>
+    <li class="nav-item" style="">
+      <a class="nav-link {% if nbar == 3 %}active{% endif %}" href="{% url 'vulnerabilidad' %}" style="color: #2a2057;">Vulnerabilidad</a>
+    </li>
+    <div class="vl"></div>
+    <li class="nav-item" style="">
+        <a class="nav-link {% if nbar == 4 %}active{% endif %}" href="{% url 'falta' %}" style="color: #2a2057;">Falta de Capacidad de Respuesta</a>
+    </li>
+    <div class="vl"></div>
+    <li class="nav-item" style="">
+        <a class="nav-link {% if nbar == 5 %}active{% endif %}" href="{% url 'generar' %}" style="color: #2a2057;">Generar Reporte</a>
+    </li>
+    
+  </ul>
+<!-- end Topbar -->
+
+
+
+<!--Start bar-->
+<div style="margin-left: 0.6vw; margin-right: 0.6vw; margin-top: 1vh;">
+  {% if mobile %}
+      <div  style="background-color: white; height: 12vh;" class="border-1">
+          <div class="row justify-content-between">
+              <div class="col" style="padding-top: 0.5vh; padding-left: 3vw;">
+  {% else %}
+      <div  style="background-color: white; height: 5.4vh;" class="border-1">
+          <div class="row justify-content-between">
+              <div class="col" style="padding-top: 0.5vh; padding-left: 1.5vw">
+  {% endif %}
+              <span style="font-size: 2.5vh;">{{ text}}</span> <span style="font-size: 1.5vh;"></span>
+          </div>
+
+          <div class="col" style="padding-top: 0.5vh; padding-right: 1.5vw;">
+              <div class="row">
+                  <div class="col-md-auto" style="padding-top: 0.8vh;">
+                      <span>Nivel de {{ text2 }}:</span>
+                  </div>
+                  <div class="col">
+                      {% if mobile %}
+                          <select name="riesgo" class="select form-select" required="" id="riesgo" style="height: 4.5vh; width: 25vw;" onchange="level(0)">
+                      {% else %}
+                          <select name="riesgo" class="select form-select" required="" id="riesgo" style="height: 4.2vh; font-size: 1.7vh;" onchange="level(0)">
+                      {% endif %}
+                          {% for estado in estados %}
+                              <option value="{{ estado.pk }}">{{ estado.name }}</option>
+                          {% endfor %}
+                      </select> 
+                  </div>
+              </div>
+          </div>
+          <div class="col" style="padding-top: 0.5vh; padding-right: 1.5vw;">
+              <div class="row">
+                  <div class="col-md-auto" style="padding-top: 0.8vh;">
+                      <span>Municipio:</span>
+                  </div>
+                  <div class="col-9">
+                    {% if mobile %}
+                      <div class="row" style="height: 4.5vh; width: 25vw; font-size: 2.1vh; padding-top:0.5vh ; border: 1px solid #ced4da !important; color: #495057 !important; border-radius: 4px;">
+                    {% else %}
+                      <div class="row" style="height: 4.2vh; font-size: 1.7vh; padding-top:1vh ; border: 1px solid #ced4da !important; color: #495057 !important; border-radius: 4px;">  
+                    {% endif %}
+                      <select name="municipio" class="select form-select" required="" id="municipio" style="height: 0vh; border: 0px solid #ffffff !important;" onchange="level(1)">
+                          <option value=0>Todos</option>
+                          {% for municipio in municipios %}
+                              <option value="{{ municipio.cod_municipio }}">{{ municipio.cod_municipio }} - {{ municipio.municipio }}</option>
+                          {% endfor %}
+                      </select> 
+                    </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!--end Bar-->
+
+
+        

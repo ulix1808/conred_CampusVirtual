@@ -1,0 +1,237 @@
+{% extends "maps_base.html" %}
+{% load static i18n %}
+{% load crispy_forms_tags %}
+
+{% block extra_css %}
+<style>
+    .col-sm-4 {
+        padding: 0.14vw;
+    }
+    .col-sm-2 {
+        padding: 0.14vw;
+    }
+</style>
+<style>
+    .map {
+      height: 63.2vh;
+      width: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Start Content-->
+    <div>
+        {% if mobile %}
+            <div style="margin-top: 1vh; margin-left: 3vw; margin-right: 3.3vw;">
+        {% else %}
+            <div style="margin-top: 1vh; margin-left: 1vw; margin-right: 0.6vw;">
+        {% endif %}
+        
+            
+            <div class="row">
+
+                
+                            <div class="col-xs-12 col-sm-2">
+                                <div  style="height:32.3vh; background-color:white; margin-bottom: 1vh ;" class="border-1">
+                                    <div style="padding-top: 1vh;">
+                                        {% if mobile %}
+                                        {% else %}
+                                        {% endif %}
+                                        <h6 style="padding-left: 0.6vw; margin-bottom: 0em;">ESTADO GENERAL</h6>
+                                        <spen style="padding-left: 0.6vw;">Indicador promedio</spen>
+                                    </div>
+                                    <div id="relojdiv" style="height:84%; width: 100%;">
+
+                                    </div>
+                                </div>
+
+                                <div style="height:32.3vh; background-color:white;" class="border-1" id="hidden_div">
+                                    <div style="padding-top: 1vh;">
+                                        <h6 style="padding-left: 0.6vw; margin-bottom: 0em;">Recuento de Municipios</h6>
+                                    </div>
+                                    <div id="barrasdiv" style="height:90%; width: 100%;">
+
+
+                                    </div>
+                                </div>
+
+
+                                <div  style="height:32.3vh; background-color:white; display: none;" class="border-1" id="hidden_div_1">
+                                    <div style="padding-top: 1vh;">
+                                        <h6 style="padding-left: 0.6vw; margin-bottom: 0em;">Información General</h6>
+
+                                        <div style="height: 80%; padding: 3%;">
+                                            <table class="table" id="inf_general" style="font-size: 1.2vh;">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Indicador</th>
+                                                        <th scope="col">Valor</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Municipio</th>
+                                                        <td id="tab_mun"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Departamento</th>
+                                                        <td id="tab_dep"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Ranking General</th>
+                                                        <td id="tab_ran"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Ranking Departamental</th>
+                                                        <td id="tab_ran_dep"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        
+
+                            
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="row" style="padding-left: 0.2vw; padding-right: 0.5vw; padding-top: 0.6vh;">
+                                    <div style="height:65.4vh; background-color:#e7e7e7; margin-bottom: 1vh ;" >
+
+                                        <div id="map" style="height: 100%; width: 100%; margin-left: 0%; padding-left: 0%;" class="border-1"></div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                <div class="col-xs-12 col-sm-4" style="margin-left: 0% !important; padding-left: 0%; margin-right: 0%; padding-right: 0.7vw;">
+                    <div class="col-xs-12 col-sm-12">
+                        <div style="height:16.3vh; background-color:white; margin-bottom: 1vh ;" class="border-1">
+                            <div class="row" style="text-align: center; padding-top: 0.1vh">
+                                <h6>Niveles de riesgo</h6>
+                            </div>
+                            <div class="row" style="margin: 0%; padding: 3%;">
+                                <div class="col" style="text-align: center;">
+                                    <h6 style="font-size: 1.7vh;">Muy Bajo</h6>
+                                    <button type="button" class="btn" onclick="ries(1)" style="border-radius: 50%; height: 5vh; width: 5vh; background-color: #ffc8bf;"></button>
+                                </div>
+                                <div class="col" style="text-align: center;">
+                                    <h6 style="font-size: 1.7vh;">Bajo</h6>
+                                    <button type="button" class="btn" onclick="ries(2)" style="border-radius: 50%; height: 5vh; width: 5vh; background-color: #FE9181;"></button>
+                                </div>
+                                <div class="col" style="text-align: center;">
+                                    <h6 style="font-size: 1.7vh;">Medio</h6>
+                                    <button type="button" class="btn" onclick="ries(3)" style="border-radius: 50%; height: 5vh; width: 5vh; background-color: #FE5A43;"></button>
+                                    
+                                </div>
+                                <div class="col" style="text-align: center;">
+                                    <h6 style="font-size: 1.7vh;">Alto</h6>
+                                    <button type="button" class="btn" onclick="ries(4)" style="border-radius: 50%; height: 5vh; width: 5vh; background-color: #921301;"></button>
+                                    
+                                </div>
+                                <div class="col" style="text-align: center;">
+                                    <h6 style="font-size: 1.7vh;">Muy Alto</h6>
+                                    <button type="button" class="btn" onclick="ries(5)" style="border-radius: 50%; height: 5vh; width: 5vh; background-color: #620D00;"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div style="height:15.5vh; background-color:white; margin-bottom: 1vh ;" class="border-1">
+                            <div style="text-align: center; color: #4c4c4c;">
+                                <h2 style="font-size: 3vh; padding: 0% !important; margin: 0% !important;"> Peligro y Exposición</h2>
+                            </div>
+                            <div class="row" style="margin: 0%; padding: 0%;">
+                                <div class="col-1">
+                                    <div style="height:12vh; font-size: 5.5vh; text-align: right; color: #ff7f7f;">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div style="text-align: center; height:100%; width: 99%;" id="pel_y_exp" >
+                                
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div style="height:15.5vh; background-color:white; margin-bottom: 1vh ;" class="border-1">
+                            <div style="text-align: center; color: #4c4c4c;">
+                                <h2 style="font-size: 3vh; padding: 0% !important; margin: 0% !important;"> Vulnerabilidad </h2>
+                            </div>
+                            <div class="row" style="margin: 0%; padding: 0%;">
+                                <div class="col-1">
+                                    <div style="height:12vh; font-size: 5.5vh; text-align: right; color: #ff7f7f;">
+                                        <i class="fas fa-user-injured"></i>
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div style="text-align: center; height:100%; width: 99%;" id="vulne" >
+                                
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-12">
+                        <div style="height:15.5vh; background-color:white; margin-bottom: 1vh ;" class="border-1">
+                            <div style="text-align: center; color: #4c4c4c;">
+                                <h2 style="font-size: 3vh; padding: 0% !important; margin: 0% !important;"> Falta de Capacidad de Respuesta </h2>
+                            </div>
+                            <div class="row" style="margin: 0%; padding: 0%;">
+                                <div class="col-1">
+                                    <div style="height:12vh; font-size: 5.5vh; text-align: right; color: #ff7f7f;">
+                                        
+                                        <div class="fs1" style="text-align: start;">
+                                            <div class="clearfix" style="font-size: 5.5vh;">
+                                                <span class="icon-facares"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-11">
+                                    <div style="text-align: center; height:100%; width: 99%;" id="falta_respuesta" >
+                                
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- End Content-->
+
+{% endblock %}
+{% block extra_javascript %}
+<!--script>
+</script-->
+<script>
+    var host = ("{{host|escapejs}}");    
+</script>
+<script src="{% static 'js/dash1/map.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dash1/bars.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dash1/info.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dash1/cards.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/dash1/reloj.js' %}" type="text/javascript"></script>
+<script>
+    function ries(a){
+        $("#riesgo").val(a).change();
+    }
+    $('#municipio').select2({
+        theme: "bootstrap4",
+        language: 'es'
+    });
+</script>
+{% endblock%}
