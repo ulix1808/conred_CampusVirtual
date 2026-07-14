@@ -1,0 +1,31 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.csv
+*credentials*.txt
+**/config.php
+!**/config.example.php
+!**/moodle-config.example.php
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Python / venv (por si se agrega código después)
+venv/
+venv_backup/
+__pycache__/
+*.pyc
+
+# Archives / dumps
+*.sql
+*.sql.gz
+*.dump
+*.tar
+*.tar.gz
+*.zip
