@@ -4,12 +4,22 @@ Guía operativa para desplegar el **Tablero Python** (`tableroinformguatemala.co
 
 - **App:** contenedor en **Amazon ECS / Fargate**
 - **BD:** **Amazon RDS for PostgreSQL**
-- **Imagen:** preferible **Amazon ECR** (nativo con Fargate). Docker Hub es opcional si CONRED ya lo usa.
+- **Imagen:** **Docker Hub** (flujo habitual del equipo). **ECR no es obligatorio** — Fargate puede hacer pull desde Docker Hub.
 
 Cuenta AWS: `631394011641` (CONRED).  
 Usuario IAM de trabajo: `leonardo.villasenor`.
 
 > **Importante:** para CLI/SDK necesitas **Access Key ID + Secret Access Key**. Solo el Access Key ID no alcanza. No subas secretos al repo ni a la imagen Docker.
+
+### Docker Hub → Fargate (sin ECR)
+
+| Origen de imagen | ¿Fargate puede usarla? |
+|------------------|------------------------|
+| Docker Hub **público** | Sí — en la task: `usuario/repo:tag` |
+| Docker Hub **privado** | Sí — Secrets Manager con user/password de Hub + `repositoryCredentials` en la task definition |
+| Amazon ECR | Opcional (alternativa nativa AWS) |
+
+ECR **no se necesita** si la imagen ya vive en Docker Hub. Las tasks sí necesitan salida a internet (NAT o subnet pública) para hacer `docker pull` de Hub.
 
 ---
 
@@ -24,7 +34,30 @@ Usuario IAM de trabajo: `leonardo.villasenor`.
 | Dependencias | `TableroInform/requirements.txt` (+ falta `django-cors-headers` y `gunicorn` en el build) |
 | Moodle / WordPress | **No** se usan en tiempo real; el tablero tiene datos propios |
 
-Variables que debe leer el contenedor (mismo contrato que `settings.py`):
+### Variables de entorno del contenedor (`settings.py`)
+
+**Mínimo obligatorio en Fargate + RDS:**
+
+```text
+SECRET_KEY=...
+ALLOWED_HOSTS=<dominio>,<dns-del-alb>
+DB_NAME=...
+DB_USER=...
+DB_PASS=...
+DB_HOST=<endpoint-rds>
+```
+
+| Variable | ¿Obligatoria? | Nota |
+|----------|---------------|------|
+| `SECRET_KEY` | **Sí** | Sin ella Django no arranca |
+| `ALLOWED_HOSTS` | **Sí** en prod | Default vacío → `DisallowedHost` |
+| `DB_HOST` / `DB_NAME` / `DB_USER` / `DB_PASS` | **Sí** en Fargate | Defaults apuntan a localhost / `hola` |
+| `DEBUG` | No | Default `False` |
+| `DB_ENGINE` | No | Default `django.db.backends.postgresql_psycopg2` |
+| `DB_PORT` | No | Default `5432` |
+| `EMAIL_*` | No | No hacen falta para levantar el tablero |
+
+Lista completa soportada (incluye opcionales):
 
 ```text
 SECRET_KEY
@@ -59,11 +92,11 @@ Permisos mínimos que vas a necesitar (o rol Admin en la cuenta de PoC):
 
 - VPC / EC2 (SG, subnets)
 - RDS
-- ECR
+- ECR (solo si eligen esa alternativa; **no requerido** con Docker Hub)
 - ECS
 - Elastic Load Balancing
 - IAM (task roles)
-- Secrets Manager (recomendado)
+- Secrets Manager (recomendado; obligatorio si Hub privado o secretos de app)
 - CloudWatch Logs
 
 ---
@@ -78,7 +111,7 @@ Necesitas:
 |---------|-----|
 | 2+ subnets **privadas** (AZs distintas) | RDS + tasks Fargate |
 | 2+ subnets **públicas** | ALB (y NAT si las tasks van a privadas) |
-| NAT Gateway (si Fargate en privada) | Salida a internet (ECR pull, updates) |
+| NAT Gateway (si Fargate en privada) | Salida a internet (**Docker Hub / ECR pull**, updates) |
 | Security Group `sg-alb` | Inbound 80/443 desde internet (o VPN) |
 | Security Group `sg-ecs` | Inbound **8000** (o el puerto del contenedor) **solo desde `sg-alb`** |
 | Security Group `sg-rds` | Inbound **5432** **solo desde `sg-ecs`** |
@@ -193,9 +226,25 @@ docker run --rm -p 8000:8000 \
 
 ---
 
-## 5. Subir la imagen (ECR recomendado)
+## 5. Subir la imagen → Docker Hub (camino principal)
 
-### Opción A — Amazon ECR (recomendada para Fargate)
+**No se requiere ECR.** Flujo del equipo: build local → push a Docker Hub → Fargate hace pull de esa imagen.
+
+### 5.1 Push a Docker Hub
+
+```bash
+# Desde TableroInform/ (contexto del Dockerfile)
+docker login
+docker build -t <dockerhub-user>/conred-tablero-inform:latest .
+docker push <dockerhub-user>/conred-tablero-inform:latest
+```
+
+- Repo **público:** la task de Fargate usa la imagen directamente: `<dockerhub-user>/conred-tablero-inform:latest`
+- Repo **privado:** crear en Secrets Manager un secret JSON con usuario/password (o access token) de Docker Hub y referenciarlo en la task definition como **private registry authentication** (`repositoryCredentials`). El *task execution role* necesita `secretsmanager:GetSecretValue` sobre ese secret.
+
+### 5.2 Alternativa opcional — Amazon ECR
+
+Solo si más adelante quieren dejar de usar Hub:
 
 ```bash
 AWS_ACCOUNT=631394011641
@@ -212,21 +261,13 @@ docker tag $REPO:latest ${AWS_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/$REPO:lat
 docker push ${AWS_ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com/$REPO:latest
 ```
 
-### Opción B — Docker Hub
-
-1. Crear repo privado en Docker Hub (ej. `conred/tablero-inform`).
-2. `docker login` → `docker tag` → `docker push`.
-3. En ECS, configurar credenciales de registro privado (Secrets Manager + `repositoryCredentials` en la task definition).
-
-Para Fargate, **A (ECR)** evita pelear con login de Hub.
-
 ---
 
 ## 6. Secretos de la aplicación
 
 No poner passwords en la task definition en claro si se puede evitar.
 
-1. Secrets Manager → secret JSON, ejemplo:
+1. Secrets Manager → secret JSON de **app + BD**, ejemplo (mínimo):
 
 ```json
 {
@@ -234,14 +275,16 @@ No poner passwords en la task definition en claro si se puede evitar.
   "DB_USER": "...",
   "DB_PASS": "...",
   "DB_HOST": "<rds-endpoint>",
-  "DB_NAME": "tableroi_db",
-  "DB_PORT": "5432"
+  "DB_NAME": "tableroi_db"
 }
 ```
 
-2. La task role / execution role debe poder `secretsmanager:GetSecretValue`.
+(`DB_PORT` / `DB_ENGINE` / `DEBUG` opcionales; usan defaults de `settings.py`.)
 
-Variables no secretas pueden ir como env normales: `DEBUG=False`, `ALLOWED_HOSTS=tableroinformguatemala.conred.gob.gt,<dns-del-alb>`, `DB_ENGINE=...`.
+2. Si Docker Hub es **privado**, otro secret (o el mismo archivo documentado) con credenciales del registry para `repositoryCredentials`.
+3. El *task execution role* debe poder `secretsmanager:GetSecretValue`.
+
+Variables no secretas como env normales: `ALLOWED_HOSTS=tableroinformguatemala.conred.gob.gt,<dns-del-alb>`.
 
 ---
 
@@ -258,11 +301,12 @@ ECS → **Create cluster** → Networking only (Fargate) → nombre `conred-tabl
 | Launch type | **Fargate** |
 | OS/Arch | Linux / X86_64 (o ARM si la imagen es arm64) |
 | CPU / Memoria | 0.5 vCPU / 1 GB (PoC) |
-| Task execution role | rol con pull ECR + logs + secrets |
-| Task role | rol de la app (mínimo; Secrets si aplica) |
-| Container image | URI de ECR del paso 5 |
+| Task execution role | rol con logs + Secrets Manager (+ pull Hub privado si aplica) |
+| Task role | rol de la app (mínimo) |
+| Container image | **URI Docker Hub** del paso 5: `<user>/conred-tablero-inform:tag` |
+| Private registry auth | Solo si el repo de Hub es privado (`repositoryCredentials`) |
 | Port mapping | **8000** TCP |
-| Env / Secrets | las del paso 6 |
+| Env / Secrets | mínimo del §0 + paso 6 |
 | CloudWatch Logs | activar (`/ecs/conred-tablero`) |
 
 Health check opcional del contenedor: HTTP `GET /` en puerto 8000 (confirmar ruta real).
@@ -320,9 +364,9 @@ Health check opcional del contenedor: HTTP `GET /` en puerto 8000 (confirmar rut
 | 3 | Crear RDS PostgreSQL (privado) | Endpoint `DB_HOST` |
 | 4 | Restaurar dump y validar tablas | Datos listos |
 | 5 | Dockerfile + build local | Imagen corre |
-| 6 | Push a **ECR** | Imagen en AWS |
+| 6 | Push a **Docker Hub** (ECR opcional) | Imagen disponible para Fargate |
 | 7 | Secrets Manager + task definition | Secrets fuera de la imagen |
-| 8 | ALB + ECS Service Fargate | App publicada |
+| 8 | ALB + ECS Service Fargate (pull desde Hub) | App publicada |
 | 9 | Prueba de humo + logs | PoC OK |
 | 10 | DNS / TLS | Cutover |
 
