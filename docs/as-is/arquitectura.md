@@ -20,7 +20,8 @@ Plesk (nginx + PHP-FPM / procesos app)
 
 | Ítem | Valor |
 |------|--------|
-| URL | `https://campusvirtual.conred.gob.gt/aulavirtualconred` |
+| URL hoy | `https://campusvirtual.conred.gob.gt/aulavirtualconred` |
+| URL target | `https://aulavirtual.campusvirtual.conred.gob.gt/` |
 | Versión | Moodle 5.0.2 (Build 20250811, rama 5.0 estable) |
 | PHP | 8.3.32 (FPM) |
 | Web | nginx |
@@ -45,6 +46,7 @@ Usuario crontab reportado: `campusvirtual.conred_6tddjsmcntx` en host `vmi110288
 
 | Ítem | Valor |
 |------|--------|
+| URL | `https://campusvirtual.conred.gob.gt/` |
 | Rol | Sitio informativo (sin SSO/APIs hacia Moodle) |
 | Versión | 7.0.1 |
 | PHP | 8.3.32 (FPM) · nginx |

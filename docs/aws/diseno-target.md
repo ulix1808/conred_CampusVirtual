@@ -6,11 +6,12 @@
 
 | Capa | Servicio AWS | Notas |
 |------|----------------|-------|
-| DNS / TLS | Route 53 + ACM (o DNS externo → ALB) | `campusvirtual` y `tablero` |
-| Entrada | ALB / NLB | Path o host-based routing |
-| App Moodle/WP | EC2 o ECS/Fargate | Depende de decisión de contenedores |
-| App Tablero | EC2 o ECS | Django + gunicorn/uwsgi detrás de nginx |
-| BD relacional | **RDS** MySQL/MariaDB (Moodle, WP) | Instancias separadas o multi-DB según aislamiento |
+| DNS / TLS | Route 53 + ACM (o DNS externo → ALB) | `campusvirtual`, `aulavirtual.campusvirtual`, `tablero` |
+| Entrada | ALB | Host rules: WP vs Moodle vs tablero |
+| App WordPress | EC2 (+ nginx/PHP 8.3) | `campusvirtual.conred.gob.gt` |
+| App Moodle | EC2 (+ nginx/PHP 8.3) | `aulavirtual.campusvirtual.conred.gob.gt` |
+| App Tablero | ECS/Fargate | Django + gunicorn |
+| BD Moodle+WP | **1 RDS** MySQL/MariaDB | Dos databases (`wordpress`, `moodle`) + usuarios distintos |
 | BD Tablero | **RDS PostgreSQL** (versión soportada) | Migrar desde 9.2 con plan de upgrade |
 | Ficheros | EBS / **EFS** / S3 | `moodledata` ~349 MB; uploads WP ~50 GB |
 | Secretos | Secrets Manager / SSM | Sustituir `config.php` / `.env` en claro |
@@ -19,10 +20,10 @@
 
 ## Flujos a diseñar
 
-1. Moodle → RDS + volumen `dataroot` + cron.
-2. WordPress → RDS + estrategia uploads 50 GB.
-3. Django → RDS PostgreSQL upgraded + variables de entorno.
-4. Cutover DNS y rollback.
+1. Moodle → subdominio nuevo + RDS (BD `moodle`) + EFS `dataroot` + cron.
+2. WordPress → dominio campusvirtual + misma RDS (BD `wordpress`) + EFS uploads ~50 GB.
+3. Django → RDS PostgreSQL upgraded + Fargate (runbook aparte).
+4. Cutover DNS / ALB host rules y rollback.
 
 ## Checklist de validación
 

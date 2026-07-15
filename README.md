@@ -19,12 +19,13 @@ assets/               Capturas / diagramas
 
 | Servicio | URL | Stack |
 |----------|-----|--------|
-| **Moodle** | campusvirtual.conred.gob.gt | Moodle 5.0.2 · PHP 8.3 · MariaDB · nginx |
-| **WordPress** | mismo hosting | WP 7.0.1 · PHP 8.3 · MySQL |
-| **Tablero Python** | tableroinformguatemala.conred.gob.gt | Django 3.2 · Python 3.9 · PostgreSQL |
+| **WordPress** | `campusvirtual.conred.gob.gt` | WP 7.0.1 · PHP 8.3 · MySQL |
+| **Moodle** | `aulavirtual.campusvirtual.conred.gob.gt` (hoy: path `/aulavirtualconred`) | Moodle 5.0.2 · PHP 8.3 · MariaDB/MySQL · nginx |
+| **Tablero Python** | `tableroinformguatemala.conred.gob.gt` | Django 3.2 · Python 3.9 · PostgreSQL |
 
 ## Runbooks
 
+- [Moodle + WordPress → EC2 + 1 RDS + ALB (Leo)](docs/runbooks/leo-moodle-wordpress-rds.md)
 - [Tablero Inform → Fargate + RDS (Leo)](docs/runbooks/leo-tablero-fargate-rds.md)
 
 ## Seguridad

@@ -18,8 +18,8 @@ $CFG->dboptions = array (
   'dbcollation' => 'utf8mb4_unicode_ci',
 );
 
-$CFG->wwwroot   = 'https://campusvirtual.conred.gob.gt/aulavirtualconred';
-$CFG->dataroot  = '/var/moodledata';
+$CFG->wwwroot   = 'https://aulavirtual.campusvirtual.conred.gob.gt';
+$CFG->dataroot  = '/var/moodledata'; // o mount EFS p.ej. /mnt/efs/moodledata
 $CFG->admin     = 'admin';
 $CFG->slasharguments = 0;
 

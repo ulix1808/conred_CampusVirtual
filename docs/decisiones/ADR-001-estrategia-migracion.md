@@ -32,9 +32,10 @@ Hay tres workloads (Moodle, WordPress, Tablero Django) hoy en Plesk. Se debe lle
 
 | Componente | Enfoque tentativo |
 |------------|-------------------|
-| Moodle | Reinstalar (oficial/container) + RDS MySQL/MariaDB + EFS/EBS para `dataroot` |
-| WordPress | Reinstalar + RDS + almacenamiento uploads (EFS o S3+plugin) |
-| Tablero Django | Reinstalar/container + **upgrade** PostgreSQL en RDS |
+| Moodle | Reinstalar en EC2 + URL `aulavirtual.campusvirtual.conred.gob.gt` + EFS `dataroot` |
+| WordPress | Reinstalar en EC2 + URL `campusvirtual.conred.gob.gt` + EFS uploads |
+| BD Moodle+WP | **Un RDS** MySQL/MariaDB con dos databases |
+| Tablero Django | Contenedor Fargate + **upgrade** PostgreSQL en RDS |
 
 ## Decisión
 

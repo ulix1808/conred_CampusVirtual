@@ -14,8 +14,11 @@ Derivado del discovery del proyecto **Campus Virtual** (ítem 7 del portafolio C
 
 ## Componentes en alcance
 
-- `campusvirtual.conred.gob.gt` — Moodle + WordPress  
+- `campusvirtual.conred.gob.gt` — WordPress (sitio informativo)  
+- `aulavirtual.campusvirtual.conred.gob.gt` — Moodle (hoy path `/aulavirtualconred`)  
 - `tableroinformguatemala.conred.gob.gt` — Tablero Django + PostgreSQL  
+
+Runbook operativo: [leo-moodle-wordpress-rds.md](../runbooks/leo-moodle-wordpress-rds.md).
 
 ## Riesgos tempranos
 
