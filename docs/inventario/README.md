@@ -25,6 +25,16 @@ Fuente: discovery interno (`Respuesta.txt` y configuración local). **Sin secret
 | WP BD | ~250 MB |
 | Host Plesk reportado | `vmi1102881` |
 
+## ArcGIS (`sig.conred.gob.gt`)
+
+Ver [docs/as-is/arcgis.md](../as-is/arcgis.md). Resumen:
+
+| Rol | IP | Componente |
+|-----|-----|------------|
+| Portal + Web Adaptor | `94.72.113.246` | Portal 11.3, Web Adaptor Java |
+| Server + GeoEvent | `94.72.113.72` | ArcGIS Server 11.3, GeoEvent 11.3 |
+| Data Store | `207.244.239.174` | Relational Data Store (PostgreSQL 15.5 interno) · ~53 GB usados en disco |
+
 ## Código local de referencia (workspace)
 
 El folder de trabajo local puede contener copias de `config.php`, `cron.php` y datos del tablero; **no se versionan** en este repositorio.

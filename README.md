@@ -22,6 +22,7 @@ assets/               Capturas / diagramas
 | **WordPress** | `campusvirtual.conred.gob.gt` | WP 7.0.1 · PHP 8.3 · MySQL |
 | **Moodle** | `aulavirtual.campusvirtual.conred.gob.gt` (hoy: path `/aulavirtualconred`) | Moodle 5.0.2 · PHP 8.3 · MariaDB/MySQL · nginx |
 | **Tablero Python** | `tableroinformguatemala.conred.gob.gt` | Django 3.2 · Python 3.9 · PostgreSQL |
+| **ArcGIS** | `sig.conred.gob.gt` | Enterprise 11.3 · 3 VPS Ubuntu 20.04 · [AS-IS](docs/as-is/arcgis.md) |
 
 ## Runbooks
 
