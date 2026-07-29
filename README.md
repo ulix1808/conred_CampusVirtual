@@ -26,6 +26,7 @@ assets/               Capturas / diagramas
 
 ## Runbooks
 
+- [ArcGIS Enterprise → 3 EC2 + ALB + WebGISDR (Leo)](docs/runbooks/leo-arcgis-aws.md)
 - [Moodle + WordPress → EC2 + 1 RDS + ALB (Leo)](docs/runbooks/leo-moodle-wordpress-rds.md)
 - [Tablero Inform → Fargate + RDS (Leo)](docs/runbooks/leo-tablero-fargate-rds.md)
 

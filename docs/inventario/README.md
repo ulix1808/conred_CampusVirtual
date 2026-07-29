@@ -35,6 +35,8 @@ Ver [docs/as-is/arcgis.md](../as-is/arcgis.md). Resumen:
 | Server + GeoEvent | `94.72.113.72` | ArcGIS Server 11.3, GeoEvent 11.3 |
 | Data Store | `207.244.239.174` | Relational Data Store (PostgreSQL 15.5 interno) · ~53 GB usados en disco |
 
+Runbook migración AWS: [leo-arcgis-aws.md](../runbooks/leo-arcgis-aws.md).
+
 ## Código local de referencia (workspace)
 
 El folder de trabajo local puede contener copias de `config.php`, `cron.php` y datos del tablero; **no se versionan** en este repositorio.

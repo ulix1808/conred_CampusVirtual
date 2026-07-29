@@ -138,4 +138,7 @@ Ruta: `/opt/arcgis/datastore/usr/arcgisdatastore/pgdata`
 - [ ] ¿GeoEvent sigue en alcance o solo Portal + Server + Data Store?
 - [ ] Certificados TLS y DNS de `sig.conred.gob.gt`
 - [ ] Estrategia: lift 3 VMs vs. reinstalar ArcGIS Enterprise en EC2
-- [ ] Backup/restore validado de los 3 roles
+- [ ] Backup/restore WebGISDR validado (ArcGIS)
+- [ ] Inventario disco VPS1/VPS2 ArcGIS
+
+Runbook operativo: [leo-arcgis-aws.md](../runbooks/leo-arcgis-aws.md).

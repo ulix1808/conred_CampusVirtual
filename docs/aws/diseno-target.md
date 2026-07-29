@@ -11,7 +11,9 @@
 | App WordPress | EC2 (+ nginx/PHP 8.3) | `campusvirtual.conred.gob.gt` |
 | App Moodle | EC2 (+ nginx/PHP 8.3) | `aulavirtual.campusvirtual.conred.gob.gt` |
 | App Tablero | ECS/Fargate | Django + gunicorn |
+| App ArcGIS | **3 EC2** Ubuntu 22.04 | Portal, Server+GeoEvent, Data Store · [runbook](../runbooks/leo-arcgis-aws.md) |
 | BD Moodle+WP | **1 RDS** MySQL/MariaDB | Dos databases (`wordpress`, `moodle`) + usuarios distintos |
+| ArcGIS Data Store | **EBS en EC2** (no RDS) | PostgreSQL interno Esri |
 | BD Tablero | **RDS PostgreSQL** (versión soportada) | Migrar desde 9.2 con plan de upgrade |
 | Ficheros | EBS / **EFS** / S3 | `moodledata` ~349 MB; uploads WP ~50 GB |
 | Secretos | Secrets Manager / SSM | Sustituir `config.php` / `.env` en claro |
@@ -23,7 +25,8 @@
 1. Moodle → subdominio nuevo + RDS (BD `moodle`) + EFS `dataroot` + cron.
 2. WordPress → dominio campusvirtual + misma RDS (BD `wordpress`) + EFS uploads ~50 GB.
 3. Django → RDS PostgreSQL upgraded + Fargate (runbook aparte).
-4. Cutover DNS / ALB host rules y rollback.
+4. ArcGIS → 3 EC2 + ALB + WebGISDR (runbook aparte).
+5. Cutover DNS / ALB host rules y rollback.
 
 ## Checklist de validación
 
